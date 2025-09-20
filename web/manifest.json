@@ -1,11 +1,11 @@
 {
-    "name": "testing_pwa",
-    "short_name": "testing_pwa",
-    "start_url": ".",
+    "name": "Flutter PWA Test",
+    "short_name": "FlutterPWA",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A Flutter PWA for testing",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
