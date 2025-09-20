@@ -26,7 +26,6 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -128,16 +127,31 @@
       100% { width: 100%; }
     }
 
-    /* Flutter app styling */
+    /* Flutter app styling - FIXED */
     #flutter-view {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       opacity: 0;
       transition: opacity 0.5s ease-in;
-      height: 100vh;
-      width: 100vw;
+      z-index: 1;
     }
 
     #flutter-view.loaded {
       opacity: 1;
+    }
+
+    /* Ensure Flutter app takes full space */
+    .flt-scene {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .flt-glass-pane {
+      width: 100% !important;
+      height: 100% !important;
     }
   </style>
 
@@ -177,14 +191,18 @@
 
         // Hide loading screen once Flutter is ready
         const loading = document.getElementById('loading');
-        loading.classList.add('fade-out');
-        setTimeout(() => {
-          loading.style.display = 'none';
-        }, 500);
+        if (loading) {
+          loading.classList.add('fade-out');
+          setTimeout(() => {
+            loading.style.display = 'none';
+          }, 500);
+        }
 
         // Show Flutter app
         const flutterView = document.getElementById('flutter-view');
-        flutterView.classList.add('loaded');
+        if (flutterView) {
+          flutterView.classList.add('loaded');
+        }
       }
     });
   });

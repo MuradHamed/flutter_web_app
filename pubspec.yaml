@@ -18,4 +18,3 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
-  # Remove the assets section if you don't have an icons folder
