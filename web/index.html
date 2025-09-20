@@ -128,18 +128,24 @@
       100% { width: 100%; }
     }
 
-    /* Hide loading screen once Flutter loads */
-    flutter-view {
+    /* Flutter app styling */
+    #flutter-view {
       opacity: 0;
       transition: opacity 0.5s ease-in;
+      height: 100vh;
+      width: 100vw;
     }
 
-    flutter-view.loaded {
+    #flutter-view.loaded {
       opacity: 1;
     }
   </style>
+
+  <!-- Flutter's new initialization method -->
+  <script src="flutter.js" defer></script>
 </head>
 <body>
+
 <div id="loading" class="loading-container">
   <div class="logo-container">
     <div class="logo">F</div>
@@ -152,19 +158,38 @@
   </div>
 </div>
 
-<script src="flutter_bootstrap.js" async></script>
+<!-- Flutter app container -->
+<div id="flutter-view"></div>
 
 <script>
-  // Hide loading screen once Flutter is ready
-  window.addEventListener('flutter-first-frame', function () {
-    const loading = document.getElementById('loading');
-    loading.classList.add('fade-out');
-    setTimeout(() => {
-      loading.style.display = 'none';
-    }, 500);
+  window.addEventListener('load', function(ev) {
+    // Use the new Flutter.load method instead of deprecated loadEntrypoint
+    _flutter.loader.load({
+      serviceWorker: {
+        serviceWorkerVersion: serviceWorkerVersion,
+      },
+      onEntrypointLoaded: async function(engineInitializer) {
+        // Initialize the Flutter engine
+        const appRunner = await engineInitializer.initializeEngine();
+
+        // Run the app
+        await appRunner.runApp();
+
+        // Hide loading screen once Flutter is ready
+        const loading = document.getElementById('loading');
+        loading.classList.add('fade-out');
+        setTimeout(() => {
+          loading.style.display = 'none';
+        }, 500);
+
+        // Show Flutter app
+        const flutterView = document.getElementById('flutter-view');
+        flutterView.classList.add('loaded');
+      }
+    });
   });
 
-  // Fallback: hide loading screen after 5 seconds if Flutter event doesn't fire
+  // Fallback: hide loading screen after 5 seconds if Flutter doesn't load
   setTimeout(() => {
     const loading = document.getElementById('loading');
     if (loading && !loading.classList.contains('fade-out')) {
